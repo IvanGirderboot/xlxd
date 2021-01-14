@@ -948,7 +948,7 @@ bool CYsfProtocol::IsValidServerStatusPacket(const CBuffer &Buffer) const
 bool CYsfProtocol::EncodeServerStatusPacket(CBuffer *Buffer) const
 {
     uint8 tag[] = { 'Y','S','F','S' };
-    uint8 description[] = { 'X','L','X',' ','r','e','f','l','e','c','t','o','r',' ' };
+    uint8 description[] = { 'H','a','m',' ','R','a','d','i','o',' ','V','i','l','l' };
     uint8 callsign[16];
      
     // tag

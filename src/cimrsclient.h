@@ -1,8 +1,8 @@
 //
-//  csemaphore.h
+//  cimrsclient.h
 //  xlxd
 //
-//  Created by Jean-Luc Deltombe (LX3JL) on 16/04/2017.
+//  Created by Jean-Luc Deltombe (LX3JL) on 29/10/2019.
 //  Copyright © 2015 Jean-Luc Deltombe (LX3JL). All rights reserved.
 //
 // ----------------------------------------------------------------------------
@@ -22,37 +22,38 @@
 //    along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
 // ----------------------------------------------------------------------------
 
-#ifndef csemaphore_h
-#define csemaphore_h
+#ifndef cimrsclient_h
+#define cimrsclient_h
+
+#include "cclient.h"
+
+////////////////////////////////////////////////////////////////////////////////////////
+// define
 
 
 ////////////////////////////////////////////////////////////////////////////////////////
 // class
 
-class CSemaphore
+class CImrsClient : public CClient
 {
 public:
-    // constructor
-    CSemaphore();
+    // constructors
+    CImrsClient();
+    CImrsClient(const CCallsign &, const CIp &, char = ' ');
+    CImrsClient(const CImrsClient &);
     
     // destructor
-    virtual ~CSemaphore() {};
+    virtual ~CImrsClient() {};
     
-    // operation
-    void Reset(void);
-    void Notify(void);
-    void Wait(void);
-    bool WaitFor(uint);
-    void PreWaitFor(void);
+    // identity
+    int GetProtocol(void) const                 { return PROTOCOL_IMRS; }
+    const char *GetProtocolName(void) const     { return "IMRS"; }
+    int GetCodec(void) const                    { return CODEC_AMBE2PLUS; }
+    bool IsNode(void) const                     { return true; }
     
-protected:
-    // data
-    std::mutex              m_Mutex;
-    std::condition_variable m_Condition;
-    size_t                  m_Count;
-    size_t                  m_WaitingCount;
-
+    // status
+    bool IsAlive(void) const;
 };
 
 ////////////////////////////////////////////////////////////////////////////////////////
-#endif /* csemaphore_h */
+#endif /* cimrsclient_h */

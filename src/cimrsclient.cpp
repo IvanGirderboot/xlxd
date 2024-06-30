@@ -1,8 +1,8 @@
 //
-//  csemaphore.h
+//  cimrsclient.cpp
 //  xlxd
 //
-//  Created by Jean-Luc Deltombe (LX3JL) on 16/04/2017.
+//  Created by Jean-Luc Deltombe (LX3JL) on 29/10/2019.
 //  Copyright © 2015 Jean-Luc Deltombe (LX3JL). All rights reserved.
 //
 // ----------------------------------------------------------------------------
@@ -22,37 +22,31 @@
 //    along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
 // ----------------------------------------------------------------------------
 
-#ifndef csemaphore_h
-#define csemaphore_h
+#include "main.h"
+#include "cimrsclient.h"
 
 
 ////////////////////////////////////////////////////////////////////////////////////////
-// class
+// constructors
 
-class CSemaphore
+CImrsClient::CImrsClient()
 {
-public:
-    // constructor
-    CSemaphore();
-    
-    // destructor
-    virtual ~CSemaphore() {};
-    
-    // operation
-    void Reset(void);
-    void Notify(void);
-    void Wait(void);
-    bool WaitFor(uint);
-    void PreWaitFor(void);
-    
-protected:
-    // data
-    std::mutex              m_Mutex;
-    std::condition_variable m_Condition;
-    size_t                  m_Count;
-    size_t                  m_WaitingCount;
+}
 
-};
+CImrsClient::CImrsClient(const CCallsign &callsign, const CIp &ip, char reflectorModule)
+    : CClient(callsign, ip, reflectorModule)
+{
+}
+
+CImrsClient::CImrsClient(const CImrsClient &client)
+    : CClient(client)
+{
+}
 
 ////////////////////////////////////////////////////////////////////////////////////////
-#endif /* csemaphore_h */
+// status
+
+bool CImrsClient::IsAlive(void) const
+{
+    return (m_LastKeepaliveTime.DurationSinceNow() < IMRS_KEEPALIVE_TIMEOUT);
+}
